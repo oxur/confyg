@@ -7,8 +7,8 @@ license = "Apache-2.0"
 authors = ["Duncan McGreggor <oubiwann@gmail.com>"]
 repository = "https://github.com/oxur/confyg"
 documentation = "https://docs.rs/confyg/"
-categories = ["configuration"]
-keywords = ["config", "toml", "settings", "env", "environment"]
+categories = ["config"]
+keywords = ["configuration", "toml", "settings", "env", "environment"]
 exclude = ["/.github", "/resources", ".gitignore"]
 edition = "2021"
 
