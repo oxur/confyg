@@ -20,16 +20,23 @@ impl KV {
         pfx.push('_');
         self.key = self.key.clone().replace(&pfx, "").to_ascii_lowercase()
     }
+
+    pub fn toml(&self) -> String {
+        format!("{} = '{}'", self.key, self.value)
+    }
 }
 
 #[derive(Clone, Debug, Default)]
 pub struct KVMap {
-    pub data: HashMap<String, Vec<KV>>
+    pub top_level: String,
+    pub data: HashMap<String, Vec<KV>>,
 }
 
 impl KVMap {
-    pub fn new() -> Self {
+    pub fn new(top_level: &str) -> Self {
         KVMap {
+            top_level: top_level.to_string(),
+
             .. Default::default()
         }
     }
@@ -49,6 +56,20 @@ impl KVMap {
         vals.sort();
         vals
     }
+
+    pub fn section(&self, name: &str) -> Vec<KV> {
+        let mut s = self.data.get(name).unwrap().to_vec();
+        s.sort();
+        s
+    }
+
+    pub fn section_toml(&self) -> String {
+        "".to_string()
+    }
+
+    pub fn toml(&self) -> String {
+        "".to_string()
+    }
 }
 
 fn env_format(name: &str) -> String {
@@ -58,7 +79,7 @@ fn env_format(name: &str) -> String {
 pub fn scan(top_level: String, sections: Vec<String>) -> KVMap {
     // Define the data structures we're going to use to stuff the env data,
     // to make it toml-like:
-    let mut result_map = KVMap::new();
+    let mut result_map = KVMap::new(&top_level);
     let mut seen = Vec::new();
     let mut section_lookup = HashMap::new();
     let mut prefixes = Vec::new();
