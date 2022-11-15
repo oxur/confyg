@@ -20,6 +20,12 @@ fn env_format(name: &str) -> String {
     name.to_string().to_uppercase().replace("-", "_")
 }
 
+fn env_key2toml_key(prefix: &str, key: &str) -> String {
+    let mut pfx = prefix.clone().to_string();
+    pfx.push('_');
+    key.clone().replace(&pfx, "").to_ascii_lowercase()
+}
+
 pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<EnvVar>> {
     // Define the data structures we're going to use to stuff the env data,
     // to make it toml-like:
@@ -30,7 +36,7 @@ pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<
     let main_prefix = env_format(&top_level);
     for section in sections.iter() {
         let mut prefix = main_prefix.clone();
-        prefix.push_str("_");
+        prefix.push('_');
         prefix.push_str(&env_format(section));
         section_lookup.insert(prefix.to_string(), section.to_string());
         prefixes.push(prefix);
@@ -54,7 +60,9 @@ pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<
             _ => {
                 for env_var in env_vars.clone().iter() {
                     if env_var.key.starts_with(prefix) && !seen.contains(env_var) {
-                        section_vars.push(env_var.clone());
+                        let mut kv = env_var.clone();
+                        kv.key = env_key2toml_key(prefix, &env_var.key);
+                        section_vars.push(kv);
                         seen.push(env_var.clone());
                         continue;
                     };

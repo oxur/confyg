@@ -22,11 +22,10 @@ fn test_collect_env() {
     assert_eq!(keys, vec![top_level.clone(), s1.clone(), s2.clone()]);
     let mut vals: Vec<Vec<EnvVar>> = map.clone().into_values().collect();
     vals.sort();
-    assert_eq!(vals[0][2].key, "MY_PROJ_LOG_LEVEL".to_string());
+    assert_eq!(vals[0][2].key, "log_level".to_string());
     assert_eq!(vals[0][2].value, "debug".to_string());
-    assert_eq!(vals[1][0].key, "MY_PROJ_SECTION_1_KEY_1".to_string());
+    assert_eq!(vals[1][0].key, "key_1".to_string());
     assert_eq!(vals[1][0].value, "value 3".to_string());
-    assert_eq!(vals[2][1].key, "MY_PROJ_SECTION_2_KEY_2".to_string());
+    assert_eq!(vals[2][1].key, "key_2".to_string());
     assert_eq!(vals[2][1].value, "value 6".to_string());
-
 }
