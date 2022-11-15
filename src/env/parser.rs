@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::env;
 
-#[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
+#[derive(Clone, Debug, Default, Eq, Ord, PartialEq, PartialOrd)]
 pub struct KV {
     pub key: String,
     pub value: String,
@@ -22,14 +22,43 @@ impl KV {
     }
 }
 
+#[derive(Clone, Debug, Default)]
+pub struct KVMap {
+    pub data: HashMap<String, Vec<KV>>
+}
+
+impl KVMap {
+    pub fn new() -> Self {
+        KVMap {
+            .. Default::default()
+        }
+    }
+
+    pub fn insert(&mut self, section: Option<&String>, kvs: Vec<KV>) {
+        self.data.insert(section.unwrap().to_string(), kvs);
+    }
+
+    pub fn keys(&self) -> Vec<String> {
+        let mut keys: Vec<String> = self.data.clone().into_keys().collect();
+        keys.sort();
+        keys
+    }
+
+    pub fn values(&self) -> Vec<Vec<KV>>  {
+        let mut vals: Vec<Vec<KV>> = self.data.clone().into_values().collect();
+        vals.sort();
+        vals
+    }
+}
+
 fn env_format(name: &str) -> String {
     name.to_string().to_uppercase().replace("-", "_")
 }
 
-pub fn scan(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<KV>> {
+pub fn scan(top_level: String, sections: Vec<String>) -> KVMap {
     // Define the data structures we're going to use to stuff the env data,
     // to make it toml-like:
-    let mut result_map = HashMap::new();
+    let mut result_map = KVMap::new();
     let mut seen = Vec::new();
     let mut section_lookup = HashMap::new();
     let mut prefixes = Vec::new();
@@ -69,7 +98,7 @@ pub fn scan(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<KV>
                 };
             },
         }
-        result_map.insert(section.unwrap().to_string(), section_vars);
+        result_map.insert(section, section_vars);
     }
     result_map
 }

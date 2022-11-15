@@ -17,11 +17,9 @@ fn test_scan_env() {
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
     let map = parser::scan(top_level.clone(), vec![s1.clone(), s2.clone()]);
-    let mut keys: Vec<String> = map.clone().into_keys().collect();
-    keys.sort();
+    let keys: Vec<String> = map.keys();
     assert_eq!(keys, vec![top_level.clone(), s1.clone(), s2.clone()]);
-    let mut vals: Vec<Vec<KV>> = map.clone().into_values().collect();
-    vals.sort();
+    let vals: Vec<Vec<KV>> = map.values();
     assert_eq!(vals[0][2].key, "log_level".to_string());
     assert_eq!(vals[0][2].value, "debug".to_string());
     assert_eq!(vals[1][0].key, "key_1".to_string());
