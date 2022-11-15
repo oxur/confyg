@@ -4,7 +4,7 @@ use confyg::env::parser::{KV};
 // use super::utils;
 
 #[test]
-fn test_collect_env() {
+fn test_scan_env() {
     env::set_var("MY_PROJ_LOG_LEVEL", "debug");
     env::set_var("MY_PROJ_KEY_1", "value 1");
     env::set_var("MY_PROJ_KEY_2", "value 2");
@@ -16,7 +16,7 @@ fn test_collect_env() {
     let top_level = "my-proj".to_string();
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
-    let map = parser::collect(top_level.clone(), vec![s1.clone(), s2.clone()]);
+    let map = parser::scan(top_level.clone(), vec![s1.clone(), s2.clone()]);
     let mut keys: Vec<String> = map.clone().into_keys().collect();
     keys.sort();
     assert_eq!(keys, vec![top_level.clone(), s1.clone(), s2.clone()]);

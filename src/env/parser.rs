@@ -14,19 +14,19 @@ impl KV {
             value: value.to_string(),
         }
     }
+
+    pub fn normalise_key(&mut self, prefix: &str) {
+        let mut pfx = prefix.clone().to_string();
+        pfx.push('_');
+        self.key = self.key.clone().replace(&pfx, "").to_ascii_lowercase()
+    }
 }
 
 fn env_format(name: &str) -> String {
     name.to_string().to_uppercase().replace("-", "_")
 }
 
-fn env_key2toml_key(prefix: &str, key: &str) -> String {
-    let mut pfx = prefix.clone().to_string();
-    pfx.push('_');
-    key.clone().replace(&pfx, "").to_ascii_lowercase()
-}
-
-pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<KV>> {
+pub fn scan(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<KV>> {
     // Define the data structures we're going to use to stuff the env data,
     // to make it toml-like:
     let mut result_map = HashMap::new();
@@ -61,7 +61,7 @@ pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<
                 for env_var in env_vars.clone().iter() {
                     if env_var.key.starts_with(prefix) && !seen.contains(env_var) {
                         let mut kv = env_var.clone();
-                        kv.key = env_key2toml_key(prefix, &env_var.key);
+                        kv.normalise_key(prefix);
                         section_vars.push(kv);
                         seen.push(env_var.clone());
                         continue;
