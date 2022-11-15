@@ -1,6 +1,6 @@
 use std::env;
 use confyg::env::parser;
-use confyg::env::parser::{EnvVar};
+use confyg::env::parser::{KV};
 // use super::utils;
 
 #[test]
@@ -20,7 +20,7 @@ fn test_collect_env() {
     let mut keys: Vec<String> = map.clone().into_keys().collect();
     keys.sort();
     assert_eq!(keys, vec![top_level.clone(), s1.clone(), s2.clone()]);
-    let mut vals: Vec<Vec<EnvVar>> = map.clone().into_values().collect();
+    let mut vals: Vec<Vec<KV>> = map.clone().into_values().collect();
     vals.sort();
     assert_eq!(vals[0][2].key, "log_level".to_string());
     assert_eq!(vals[0][2].value, "debug".to_string());

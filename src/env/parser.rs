@@ -2,14 +2,14 @@ use std::collections::HashMap;
 use std::env;
 
 #[derive(Clone, Debug, Eq, Ord, PartialEq, PartialOrd)]
-pub struct EnvVar {
+pub struct KV {
     pub key: String,
     pub value: String,
 }
 
-impl EnvVar {
+impl KV {
     pub fn new(key: String, value: String) -> Self {
-        EnvVar {
+        KV {
             key: key.to_string(),
             value: value.to_string(),
         }
@@ -26,7 +26,7 @@ fn env_key2toml_key(prefix: &str, key: &str) -> String {
     key.clone().replace(&pfx, "").to_ascii_lowercase()
 }
 
-pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<EnvVar>> {
+pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<KV>> {
     // Define the data structures we're going to use to stuff the env data,
     // to make it toml-like:
     let mut result_map = HashMap::new();
@@ -46,7 +46,7 @@ pub fn collect(top_level: String, sections: Vec<String>) -> HashMap<String, Vec<
     // Convert the env vars to a vec so we can sort them:
     let mut env_vars = Vec::new();
     for(key, value) in env::vars().into_iter() {
-        env_vars.push(EnvVar::new(key, value));
+        env_vars.push(KV::new(key, value));
     };
     env_vars.sort();
     // Place env vars with the project prefix into the appropriate
