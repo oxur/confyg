@@ -63,12 +63,31 @@ impl KVMap {
         s
     }
 
-    pub fn section_toml(&self) -> String {
-        "".to_string()
+    pub fn section_toml(&self, name: &str) -> String {
+        let mut toml = String::new();
+        if name != self.top_level {
+            toml.push_str(&format!("[{}]\n", name))
+        }
+        let body = self.section(name)
+            .iter()
+            .map(|kv| kv.toml())
+            .collect::<Vec<String>>()
+            .join("\n");
+        toml.push_str(&body);
+        toml
     }
 
     pub fn toml(&self) -> String {
-        "".to_string()
+        let mut toml = self.section_toml(&self.top_level);
+        toml.push_str("\n");
+        for key in self.data.keys() {
+            if key != &self.top_level {
+                toml.push_str("\n");
+                toml.push_str(&self.section_toml(&key));
+                toml.push_str("\n");
+            }
+        }
+        toml
     }
 }
 
