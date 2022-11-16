@@ -59,7 +59,7 @@ impl KVMap {
 
     pub fn section(&self, name: &str) -> Vec<KV> {
         let mut s = self.data.get(name).unwrap().to_vec();
-        s.sort();
+        s.sort_by(|a, b| a.key.cmp(&b.key));
         s
     }
 
@@ -68,20 +68,20 @@ impl KVMap {
         if name != self.top_level {
             toml.push_str(&format!("[{}]\n", name))
         }
-        let body = self.section(name)
+        let mut body = self.section(name)
             .iter()
             .map(|kv| kv.toml())
-            .collect::<Vec<String>>()
-            .join("\n");
-        toml.push_str(&body);
+            .collect::<Vec<String>>();
+        body.sort();
+        toml.push_str(&body.join("\n"));
         toml
     }
 
     pub fn toml(&self) -> String {
         let mut toml = self.section_toml(&self.top_level);
         toml.push_str("\n");
-        for key in self.data.keys() {
-            if key != &self.top_level {
+        for key in self.keys() {
+            if key != self.top_level {
                 toml.push_str("\n");
                 toml.push_str(&self.section_toml(&key));
                 toml.push_str("\n");
