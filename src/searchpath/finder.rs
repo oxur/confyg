@@ -1,5 +1,7 @@
 use std::path::Path;
 
+use super::errors::FinderError;
+
 #[derive(Clone, Debug, Default)]
 pub struct Options {
     pub paths: Vec<String>,
@@ -30,21 +32,21 @@ impl Finder {
         self
     }
 
-    pub fn find(&self, filename: &str) -> String {
+    pub fn find(&self, filename: &str) -> Result<String, FinderError> {
         find_file(filename, &self.opts)
     }
 }
 
-pub fn find_file(filename: &str, opts: &Options) -> String {
+pub fn find_file(filename: &str, opts: &Options) -> Result<String, FinderError> {
     let path = Path::new(filename);
     if path.exists() {
-        return path.to_str().unwrap().to_string();
+        return Ok(path.to_str().unwrap().to_string());
     };
     for path in opts.paths.iter() {
         let file = Path::new(path).join(filename);
         if file.exists() {
-            return file.to_str().unwrap().to_string();
+            return Ok(file.to_str().unwrap().to_string());
         };
     };
-    String::new()
+    Err(FinderError::NotFound(filename.to_string()))
 }
