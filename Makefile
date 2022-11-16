@@ -1,6 +1,6 @@
 default: all
 
-all: deps build test
+all: deps build test demos
 
 auth:
 	@echo "Copy and paste the following in the terminal where you"
@@ -20,3 +20,7 @@ deps:
 
 publish:
 	@cargo publish
+
+demos:
+	@cargo run --example=simple
+	@cargo run --example=full
