@@ -16,14 +16,12 @@ edition = "2021"
 name = "confyg"
 
 [dependencies]
-directories = "4.0"
-merge = "0.1.0"
 serde = "1.0"
+directories = "4.0"
 toml = "0.5.9"
 
 [dev-dependencies]
 serde_derive = "1.0"
-structopt = "0.3"
 
 [[example]]
 name = "simple"

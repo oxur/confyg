@@ -1,25 +1,20 @@
-use merge::Merge;
 use serde_derive::Deserialize;
-use structopt::StructOpt;
 use confyg::Confygery;
 use confyg::env::options::Options;
 
-#[derive(Debug, Default, Deserialize, Merge, StructOpt)]
-#[serde(default)]
+#[derive(Debug, Deserialize)]
 struct Config {
     env: String,
     servers: Servers,
     servers_db: ServersDB,
 }
 
-#[derive(Debug, Default, Deserialize, Merge, StructOpt)]
-#[serde(default)]
+#[derive(Debug, Deserialize)]
 struct Servers {
     platform: String,
 }
 
-#[derive(Debug, Default, Deserialize, Merge, StructOpt)]
-#[serde(default)]
+#[derive(Debug, Deserialize)]
 struct ServersDB {
     host: String,
     name: String,
