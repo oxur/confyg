@@ -1,6 +1,5 @@
 use serde_derive::Deserialize;
-
-// use confyg;
+use confyg::Confygery;
 
 const CFG: &str = r#"
 env = "prod"
@@ -36,7 +35,10 @@ struct DB {
 }
 
 fn main() {
-    let cfg: Config = toml::from_str(CFG).unwrap();
+    let cfg: Config = Confygery::new()
+        .add_str(CFG)
+        .build()
+        .unwrap();
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);
