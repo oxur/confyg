@@ -1,3 +1,4 @@
+use merge::Merge;
 use serde_derive::Deserialize;
 use confyg::Confygery;
 
@@ -14,19 +15,22 @@ user = "alice"
 max_conns = 500
 "#;
 
-#[derive(Deserialize)]
+#[derive(Debug, Default, Deserialize, Merge, StructOpt)]
+#[serde(default)]
 struct Config {
     env: String,
     servers: Servers,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Default, Deserialize, Merge, StructOpt)]
+#[serde(default)]
 struct Servers {
     platform: String,
     db: DB,
 }
 
-#[derive(Deserialize)]
+#[derive(Debug, Default, Deserialize, Merge, StructOpt)]
+#[serde(default)]
 struct DB {
     host: String,
     name: String,
