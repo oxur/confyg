@@ -30,4 +30,10 @@ demos:
 	CFYG_SERVERS_DB_USER=bob \
 	CFYG_SERVERS_DB_MAX_CONNS=1250 \
 	cargo run --example=env
-	@cargo run --example=full
+	@CFYG_ENV=prod \
+	CFYG_SERVERS_PLATFORM= \
+	CFYG_SERVERS_DB_HOST="3.3.4.4" \
+	CFYG_SERVERS_DB_NAME= \
+	CFYG_SERVERS_DB_USER= \
+	CFYG_SERVERS_DB_MAX_CONNS=1250 \
+	cargo run --example=full
