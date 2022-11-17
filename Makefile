@@ -25,9 +25,9 @@ demos:
 	@cargo run --example=simple
 	@CFYG_ENV=prod \
 	CFYG_SERVERS_PLATFORM=GCP \
-	CFYG_SERVERSDB_HOST="1.1.2.2" \
-	CFYG_SERVERSDB_NAME=db \
-	CFYG_SERVERSDB_USER=bob \
-	CFYG_SERVERSDB_MAX_CONNS=1250 \
+	CFYG_SERVERS_DB_HOST="1.1.2.2" \
+	CFYG_SERVERS_DB_NAME=db \
+	CFYG_SERVERS_DB_USER=bob \
+	CFYG_SERVERS_DB_MAX_CONNS=1250 \
 	cargo run --example=env
 	@cargo run --example=full
