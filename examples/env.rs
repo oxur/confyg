@@ -1,6 +1,6 @@
 use serde_derive::Deserialize;
 use confyg::Confygery;
-use confyg::env::options::Options;
+use confyg::env;
 
 #[derive(Debug, Deserialize)]
 struct Config {
@@ -25,7 +25,7 @@ struct ServersDB {
 fn main() {
     // See the Makefile's 'demos' target for the ENV VARS that
     // get set for this demo.
-    let opts = Options{
+    let opts = env::Options{
         top_level: "cfyg".to_string(),
         sections: vec![
             "servers".to_string(),

@@ -1,6 +1,5 @@
 use serde::de;
 use crate::env;
-use crate::env::scanner;
 use super::options::Options;
 
 #[derive(Clone, Debug, Default)]
@@ -24,8 +23,8 @@ impl Confygery {
         self
     }
 
-    pub fn use_env<'a>(&'a mut self, opts: env::options::Options) -> &'a mut Confygery {
-        self.map = scanner::scan(opts.top_level.clone(), opts.sections.clone());
+    pub fn use_env<'a>(&'a mut self, opts: env::Options) -> &'a mut Confygery {
+        self.map = env::scan(opts.top_level.clone(), opts.sections.clone());
         self.add_str(&self.map.toml())
     }
 

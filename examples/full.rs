@@ -1,6 +1,6 @@
 use serde_derive::Deserialize;
 use confyg::Confygery;
-use confyg::env::options::Options;
+use confyg::env;
 
 const CFG: &str = r#"
 env = "staging"
@@ -36,7 +36,7 @@ struct ServersDB {
 }
 
 fn main() {
-    let opts = Options{
+    let opts = env::Options{
         top_level: "cfyg".to_string(),
         sections: vec![
             "servers".to_string(),
