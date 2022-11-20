@@ -1,4 +1,6 @@
 use serde::de;
+use std::fs;
+use std::path::Path;
 use toml::Value;
 use toml::Value::Table;
 use crate::env;
@@ -33,6 +35,11 @@ impl Confygery {
     pub fn add_env<'a>(&'a mut self, opts: env::Options) -> &'a mut Confygery {
         self.map = env::scan(opts.top_level.clone(), opts.sections.clone());
         self.add_str(&self.map.toml())
+    }
+
+    pub fn add_file<'a, P: AsRef<Path>>(&'a mut self, filename: P) -> &'a mut Confygery {
+        let content = fs::read_to_string(filename).unwrap();
+        self.add_str(&content.to_string())
     }
 
     // Final steps

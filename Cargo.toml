@@ -24,7 +24,16 @@ toml = "0.5.9"
 serde_derive = "1.0"
 
 [[example]]
-name = "simple"
+name = "env"
+
+[[example]]
+name = "env_str"
+
+[[example]]
+name = "file"
 
 [[example]]
 name = "full"
+
+[[example]]
+name = "simple"

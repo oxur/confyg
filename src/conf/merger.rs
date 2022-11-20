@@ -11,17 +11,17 @@ pub fn merge(merged: &mut toml::Value, value: &toml::Value) {
             if x != &0_i64 {
                 *merged = value.clone();
             }
-        }
+        },
         toml::Value::Float(x) => {
             if x != &0.0_f64 {
                 *merged = value.clone();
             }
-        }
+        },
         toml::Value::Boolean(x) => {
             if x != &false {
                 *merged = value.clone();
             }
-        }
+        },
         toml::Value::Datetime(_) => {
             *merged = value.clone();
         },

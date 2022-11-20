@@ -46,7 +46,6 @@ fn main() {
     let cfg: Config = Confygery::new()
         .add_str(CFG)
         .add_env(opts)
-        .add_file("examples/confs/testing-under.toml")
         .build()
         .unwrap();
     println!("toml: {:?}", cfg);

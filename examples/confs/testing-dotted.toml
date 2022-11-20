@@ -1,0 +1,10 @@
+env = "testing"
+
+[servers]
+platform = "GCP"
+
+[servers.db]
+host = "2.3.4.5"
+name = "testing-db"
+user = "carol"
+max_conns = 700
