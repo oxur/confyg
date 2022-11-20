@@ -1,9 +1,9 @@
 use serde::de;
 use std::fs;
-use std::path::Path;
 use toml::Value;
 use toml::Value::Table;
 use crate::env;
+use crate::searchpath::Finder;
 use super::options::Options;
 use super::merger::merge;
 
@@ -27,6 +27,11 @@ impl Confygery {
         }
     }
 
+    pub fn with_opts<'a>(&'a mut self, opts: Options) -> &'a mut Confygery {
+        self.opts = opts;
+        self
+    }
+
     pub fn add_str<'a>(&'a mut self, content: &str) -> &'a mut Confygery {
         self.configs.push(content.to_string());
         self
@@ -37,8 +42,12 @@ impl Confygery {
         self.add_str(&self.map.toml())
     }
 
-    pub fn add_file<'a, P: AsRef<Path>>(&'a mut self, filename: P) -> &'a mut Confygery {
-        let content = fs::read_to_string(filename).unwrap();
+    pub fn add_file<'a>(&'a mut self, filename: &str) -> &'a mut Confygery {
+        let path = Finder::new()
+            .add_paths(self.opts.paths.clone())
+            .find(filename)
+            .unwrap();
+        let content = fs::read_to_string(path).unwrap();
         self.add_str(&content.to_string())
     }
 

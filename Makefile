@@ -24,6 +24,7 @@ publish:
 demos:
 	@cargo run --example=simple
 	@cargo run --example=file
+	@cargo run --example=file_search
 	@CFYG_ENV=prod \
 	CFYG_SERVERS_PLATFORM=GCP \
 	CFYG_SERVERS_DB_HOST="1.1.2.2" \

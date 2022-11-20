@@ -32,6 +32,13 @@ impl Finder {
         self
     }
 
+    pub fn add_paths<'a>(&'a mut self, paths: Vec<String>) -> &'a mut Finder {
+        for path in paths {
+            self.opts.paths.push(path);
+        }
+        self
+    }
+
     pub fn find(&self, filename: &str) -> Result<String, FinderError> {
         find_file(filename, &self.opts)
     }
