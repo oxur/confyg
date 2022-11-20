@@ -1,5 +1,6 @@
 use serde_derive::Deserialize;
 use confyg::Confygery;
+use confyg::conf;
 use confyg::env;
 
 const CFG: &str = r#"
@@ -36,7 +37,16 @@ struct ServersDB {
 }
 
 fn main() {
-    let opts = env::Options{
+    let conf_opts = conf::Options{
+        paths: vec![
+            "./".to_string(),
+            "../".to_string(),
+            "examples".to_string(),
+            "examples/confs".to_string(),
+        ],
+        .. Default::default()
+    };
+    let env_opts = env::Options{
         top_level: "cfyg".to_string(),
         sections: vec![
             "servers".to_string(),
@@ -44,9 +54,10 @@ fn main() {
         ],
     };
     let cfg: Config = Confygery::new()
+        .with_opts(conf_opts)
         .add_str(CFG)
-        .add_env(opts)
-        .add_file("examples/confs/testing-under.toml")
+        .add_env(env_opts)
+        .add_file("testing-under.toml")
         .build()
         .unwrap();
     println!("toml: {:?}", cfg);
