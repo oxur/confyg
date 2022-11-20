@@ -1,9 +1,7 @@
 use serde_derive::Deserialize;
-// use confyg::Confygery;
-use config::{Config, File, FileFormat};
+use confyg::Confygery;
 
 static CFG: &str = r#"
-[default]
 env = "prod"
 
 [servers]
@@ -18,7 +16,7 @@ max_conns = 500
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
-struct Default {
+struct Config {
     env: String,
     servers: Servers,
 }
@@ -40,21 +38,16 @@ struct DB {
 }
 
 fn main() {
-    // let cfg: Config = Confygery::new()
-    //     .add_str(CFG)
-    //     .build()
-    //     .unwrap();
-    let cfg = Config::builder()
-        .add_source(File::from_str(CFG, FileFormat::Toml))
+    let cfg: Config = Confygery::new()
+        .add_str(CFG)
         .build()
         .unwrap();
-
     println!("Config: {:?}", cfg);
-    // println!("Deploy env: {}", cfg.default.env);
-    // println!("Servers platform: {}", cfg.servers.platform);
-    // println!("DB host: {}", cfg.servers.db.host);
-    // println!("DB name: {}", cfg.servers.db.name);
-    // println!("DB user: {}", cfg.servers.db.user);
-    // println!("DB max connections: {}", cfg.servers.db.max_conns);
-    println!("Deploy env: {:?}", cfg.get::<String>("default.env").unwrap());
+    println!("Deploy env: {}", cfg.env);
+    println!("Servers platform: {}", cfg.servers.platform);
+    println!("DB host: {}", cfg.servers.db.host);
+    println!("DB name: {}", cfg.servers.db.name);
+    println!("DB user: {}", cfg.servers.db.user);
+    println!("DB max connections: {}", cfg.servers.db.max_conns);
+
 }

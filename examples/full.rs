@@ -44,8 +44,8 @@ fn main() {
         ],
     };
     let cfg: Config = Confygery::new()
-        .use_env(opts)
         .add_str(CFG)
+        .add_env(opts)
         .build()
         .unwrap();
     println!("toml: {:?}", cfg);
