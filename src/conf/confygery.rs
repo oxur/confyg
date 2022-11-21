@@ -1,7 +1,8 @@
-use serde::de;
 use std::fs;
+use serde::{de, ser};
 use toml::Value;
 use toml::Value::Table;
+
 use crate::env;
 use crate::searchpath::Finder;
 use super::options::Options;
@@ -51,6 +52,14 @@ impl Confygery {
         self.add_str(&content.to_string())
     }
 
+    pub fn add_struct<'a, T: ?Sized>(&'a mut self, value: &T) -> &'a mut Confygery
+    where
+    T: ser::Serialize,
+    {
+        let content = toml::to_string(value).unwrap();
+        self.configs.push(content);
+        self
+    }
     // Final steps
 
     fn merge_all<'a>(&'a mut self) -> &'a mut Confygery {
