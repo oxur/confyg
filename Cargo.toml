@@ -2,7 +2,7 @@
 name = "confyg"
 description = "A simple, TOML-based, ENV-enabled library that can find and merge configs"
 readme = "README.md"
-version = "0.2.0-dev"
+version = "0.1.3"
 license = "Apache-2.0"
 authors = ["Duncan McGreggor <oubiwann@gmail.com>"]
 repository = "https://github.com/oxur/confyg"
@@ -32,13 +32,19 @@ name = "env_str"
 name = "file"
 
 [[example]]
-name = "files"
+name = "file_none"
+
+[[example]]
+name = "file_none_with_defaults"
 
 [[example]]
 name = "file_search"
 
 [[example]]
 name = "file_struct"
+
+[[example]]
+name = "files"
 
 [[example]]
 name = "full"

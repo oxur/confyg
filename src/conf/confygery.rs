@@ -44,12 +44,20 @@ impl Confygery {
     }
 
     pub fn add_file<'a>(&'a mut self, filename: &str) -> &'a mut Confygery {
-        let path = Finder::new()
+        let result = Finder::new()
             .add_paths(self.opts.paths.clone())
-            .find(filename)
-            .unwrap();
-        let content = fs::read_to_string(path).unwrap();
-        self.add_str(&content.to_string())
+            .find(filename);
+        match result {
+            Ok(path) => {
+                let content = fs::read_to_string(path).unwrap();
+                self.add_str(&content.to_string())
+            },
+            Err(_) => {
+                // If the file isn't found, it's not added
+                self
+            }
+        }
+
     }
 
     pub fn add_struct<'a, T: ?Sized>(&'a mut self, value: &T) -> &'a mut Confygery
@@ -63,6 +71,9 @@ impl Confygery {
     // Final steps
 
     fn merge_all<'a>(&'a mut self) -> &'a mut Confygery {
+        if &self.configs.len() == &0 {
+            return self
+        }
         let mut merged: Value = toml::from_str(&self.configs[0]).unwrap();
         for i in 1..self.configs.len() {
             let value = toml::from_str(&self.configs[i]).unwrap();
