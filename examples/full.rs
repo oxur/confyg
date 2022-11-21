@@ -57,10 +57,10 @@ fn main() {
         .with_opts(conf_opts)
         .add_str(CFG)
         .add_env(env_opts)
+        .add_file("common-under.toml")
         .add_file("testing-under.toml")
         .build()
         .unwrap();
-    println!("toml: {:?}", cfg);
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers_db.host);

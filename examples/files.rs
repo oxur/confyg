@@ -1,6 +1,5 @@
 use serde_derive::Deserialize;
 use confyg::Confygery;
-use confyg::conf;
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
@@ -26,18 +25,9 @@ struct DB {
 }
 
 fn main() {
-    let opts = conf::Options{
-        paths: vec![
-            "./".to_string(),
-            "../".to_string(),
-            "examples".to_string(),
-            "examples/confs".to_string(),
-        ],
-        .. Default::default()
-    };
     let cfg: Config = Confygery::new()
-        .with_opts(opts)
-        .add_file("testing-dotted.toml")
+        .add_file("examples/confs/common-dotted.toml")
+        .add_file("examples/confs/prod-dotted.toml")
         .build()
         .unwrap();
     println!("Deploy env: {}", cfg.env);

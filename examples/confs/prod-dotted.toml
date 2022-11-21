@@ -1,0 +1,10 @@
+env = "production"
+
+[servers]
+platform = "GCP"
+
+[servers.db]
+host = "4.5.6.7"
+name = "prod-db"
+user = ""
+max_conns = 1275

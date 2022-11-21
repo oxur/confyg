@@ -1,0 +1,10 @@
+env = ""
+
+[servers]
+platform = ""
+
+[servers.db]
+host = ""
+name = "db"
+user = "admin"
+max_conns = 700

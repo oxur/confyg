@@ -29,7 +29,6 @@ fn main() {
         .add_file("examples/confs/testing-dotted.toml")
         .build()
         .unwrap();
-    println!("Config: {:?}", cfg);
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);

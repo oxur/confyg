@@ -7,4 +7,4 @@ platform = ""
 host = "2.3.4.5"
 name = "testing-db"
 user = "carol"
-max_conns = 0
+max_conns = ""

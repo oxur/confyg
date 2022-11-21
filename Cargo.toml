@@ -32,6 +32,9 @@ name = "env_str"
 name = "file"
 
 [[example]]
+name = "files"
+
+[[example]]
 name = "file_search"
 
 [[example]]

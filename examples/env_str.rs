@@ -48,7 +48,6 @@ fn main() {
         .add_env(opts)
         .build()
         .unwrap();
-    println!("toml: {:?}", cfg);
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers_db.host);
