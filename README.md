@@ -9,6 +9,12 @@
 
 *A simple, TOML-based, ENV-enabled library that can find and merge configs*
 
+## Usage
+
+Be sure to see the [examples](./examples) (and the [Makefile](./Makefile), for how to run some of them with environment variables set).
+
+Note that due to the fact that environment variables don't support the use of the `.` in variable names, the `toml` library's hierarchichal feature is not usable when you want to merge environment-based configs and string- or file-based configs with sections that have `.` in their names. You can get around this to a certain extent with underscores and switching up how you relate your Rust structs to sections (see the `./examples/env*` examples).
+
 ## License
 
 Copyright © 2022, Oxur Group
