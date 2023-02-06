@@ -1,4 +1,5 @@
-use confyg::searchpath::{find_file, Finder, FinderError, Options};
+use confyg::searchpath::options::Options;
+use confyg::searchpath::{find_file, Finder, FinderError};
 
 #[test]
 fn test_find_file_defaults() {

@@ -55,7 +55,7 @@ pub fn scan(top_level: String, mut sections: Vec<String>) -> KVMap {
         let mut prefix = main_prefix.clone();
         prefix.push('_');
         prefix.push_str(&env_format(section));
-        section_lookup.insert(prefix.to_string(), section.to_string());
+        section_lookup.insert(prefix.to_string(), section.clone());
         prefixes.push(prefix);
     }
     prefixes.push(main_prefix.to_string());
