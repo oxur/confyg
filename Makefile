@@ -12,6 +12,10 @@ auth:
 build:
 	@cargo build
 
+lint:
+	@cargo +nightly clippy --version
+	@cargo +nightly clippy --all-targets --all-features -- --no-deps -D clippy::all
+
 test:
 	@cargo test
 
@@ -50,3 +54,6 @@ demos:
 	CFYG_SERVERS_DB_USER= \
 	CFYG_SERVERS_DB_MAX_CONNS=1250 \
 	cargo run --example=full
+
+nightly:
+	@rustup toolchain install nightly

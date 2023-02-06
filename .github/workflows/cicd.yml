@@ -16,6 +16,8 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build
       run: cargo build
+    - name: Lint
+      run: make cicd-lint
     - name: Run tests
       run: cargo test
     - name: Run demos
