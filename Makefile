@@ -84,6 +84,7 @@ example-env-full:
 	CFYG_SERVERS_DB_MAX_CONNS=1250 \
 	cargo run --example=full
 
+<<<<<<< HEAD
 install-cargo-deny:
 	@echo ">> Installing cargo deny ..."
 	@cargo install --locked cargo-deny
@@ -98,5 +99,7 @@ install-udeps:
 
 .PHONY: examples
 
+=======
+>>>>>>> 8b64a49 (Added linting.)
 nightly:
 	@rustup toolchain install nightly
