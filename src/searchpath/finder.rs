@@ -1,29 +1,16 @@
 use std::path::Path;
 
 use super::errors::FinderError;
-
-#[derive(Clone, Debug, Default)]
-pub struct Options {
-    pub paths: Vec<String>,
-}
-
-impl Options {
-    pub fn default() -> Options {
-        Options{
-            .. Default::default()
-        }
-    }
-}
-
+use super::options;
 #[derive(Clone, Debug, Default)]
 pub struct Finder {
-    pub opts: Options,
+    pub opts: options::Options,
 }
 
 impl Finder {
     pub fn new() -> Finder {
         Finder {
-            opts: Options::default(),
+            opts: options::new(),
         }
     }
 
@@ -32,7 +19,7 @@ impl Finder {
         self
     }
 
-    pub fn add_paths<'a>(&'a mut self, paths: Vec<String>) -> &'a mut Finder {
+    pub fn add_paths(&mut self, paths: Vec<String>) -> &mut Finder {
         for path in paths {
             self.opts.paths.push(path);
         }
@@ -44,7 +31,7 @@ impl Finder {
     }
 }
 
-pub fn find_file(filename: &str, opts: &Options) -> Result<String, FinderError> {
+pub fn find_file(filename: &str, opts: &options::Options) -> Result<String, FinderError> {
     let path = Path::new(filename);
     if path.exists() {
         return Ok(path.to_str().unwrap().to_string());
@@ -54,6 +41,6 @@ pub fn find_file(filename: &str, opts: &Options) -> Result<String, FinderError> 
         if file.exists() {
             return Ok(file.to_str().unwrap().to_string());
         };
-    };
+    }
     Err(FinderError::NotFound(filename.to_string()))
 }
