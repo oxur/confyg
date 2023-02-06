@@ -4,10 +4,8 @@ pub struct Options {
     pub sections: Vec<String>,
 }
 
-impl Options {
-    pub fn default() -> Options {
-        Options{
-            .. Default::default()
-        }
+pub fn new() -> Options {
+    Options {
+        ..Default::default()
     }
 }

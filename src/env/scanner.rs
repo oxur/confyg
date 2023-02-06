@@ -1,7 +1,7 @@
+use super::model::{KVMap, KV};
+use super::options::Options;
 use std::collections::HashMap;
 use std::env;
-use super::options::Options;
-use super::model::{KV, KVMap};
 
 #[derive(Clone, Debug, Default)]
 pub struct Scanner {
@@ -14,32 +14,32 @@ impl Scanner {
         Scanner {
             opts: Options::default(),
 
-            .. Default::default()
+            ..Default::default()
         }
     }
 
-    pub fn set_top_level <'a>(&'a mut self, project: &str) -> &'a mut Scanner {
+    pub fn set_top_level<'a>(&'a mut self, project: &str) -> &'a mut Scanner {
         self.opts.top_level = project.to_string();
         self
     }
 
-    pub fn add_section <'a>(&'a mut self, section: &str) -> &'a mut Scanner {
+    pub fn add_section<'a>(&'a mut self, section: &str) -> &'a mut Scanner {
         self.opts.sections.push(section.to_string());
         self
     }
 
-    pub fn scan <'a>(&'a mut self) -> &'a mut Scanner {
+    pub fn scan(&mut self) -> &mut Scanner {
         self.map = scan(self.opts.top_level.clone(), self.opts.sections.clone());
         self
     }
 
-    pub fn toml (&self) -> String {
+    pub fn toml(&self) -> String {
         self.map.toml()
     }
 }
 
 fn env_format(name: &str) -> String {
-    name.to_string().to_uppercase().replace("-", "_")
+    name.to_string().to_uppercase().replace('-', "_")
 }
 
 pub fn scan(top_level: String, mut sections: Vec<String>) -> KVMap {
@@ -55,16 +55,16 @@ pub fn scan(top_level: String, mut sections: Vec<String>) -> KVMap {
         let mut prefix = main_prefix.clone();
         prefix.push('_');
         prefix.push_str(&env_format(section));
-        section_lookup.insert(prefix.to_string(), section.to_string());
+        section_lookup.insert(prefix.to_string(), section.clone());
         prefixes.push(prefix);
     }
-    prefixes.push(main_prefix.to_string());
-    section_lookup.insert(main_prefix.to_string(), top_level.to_string());
+    prefixes.push(main_prefix.clone());
+    section_lookup.insert(main_prefix, top_level);
     // Convert the env vars to a vec so we can sort them:
     let mut env_vars = Vec::new();
-    for(key, value) in env::vars().into_iter() {
+    for (key, value) in env::vars() {
         env_vars.push(KV::new(key, value));
-    };
+    }
     env_vars.sort();
     env_vars.reverse();
     // Place env vars with the project prefix into the appropriate
@@ -84,8 +84,8 @@ pub fn scan(top_level: String, mut sections: Vec<String>) -> KVMap {
                         seen.push(env_var.clone());
                         continue;
                     };
-                };
-            },
+                }
+            }
         }
         section_vars.reverse();
         result_map.insert(section, section_vars);
