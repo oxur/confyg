@@ -8,9 +8,9 @@ pub struct Options {
 }
 
 impl Options {
-    pub fn default() -> Options {
-        Options{
-            .. Default::default()
+    pub fn new() -> Options {
+        Options {
+            ..Default::default()
         }
     }
 }
@@ -23,7 +23,7 @@ pub struct Finder {
 impl Finder {
     pub fn new() -> Finder {
         Finder {
-            opts: Options::default(),
+            opts: Options::new(),
         }
     }
 
@@ -32,7 +32,7 @@ impl Finder {
         self
     }
 
-    pub fn add_paths<'a>(&'a mut self, paths: Vec<String>) -> &'a mut Finder {
+    pub fn add_paths(&mut self, paths: Vec<String>) -> &mut Finder {
         for path in paths {
             self.opts.paths.push(path);
         }
@@ -54,6 +54,6 @@ pub fn find_file(filename: &str, opts: &Options) -> Result<String, FinderError> 
         if file.exists() {
             return Ok(file.to_str().unwrap().to_string());
         };
-    };
+    }
     Err(FinderError::NotFound(filename.to_string()))
 }

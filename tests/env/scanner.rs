@@ -1,6 +1,6 @@
-use std::env;
 use confyg::env::model::KV;
-use confyg::env::scanner::{Scanner, scan};
+use confyg::env::scanner::{scan, Scanner};
+use std::env;
 // use super::utils;
 
 fn set_env_vars() {
@@ -23,7 +23,7 @@ fn test_scan_env() {
     let s2 = "section-2".to_string();
     let map = scan(top_level.clone(), vec![s1.clone(), s2.clone()]);
     let keys: Vec<String> = map.keys();
-    assert_eq!(keys, vec![top_level.clone(), s1.clone(), s2.clone()]);
+    assert_eq!(keys, vec![top_level, s1, s2]);
     let vals: Vec<Vec<KV>> = map.values();
     assert_eq!(vals[0][0].key, "ip".to_string());
     assert_eq!(vals[0][0].value, "1.2.3.4".to_string());
@@ -39,14 +39,20 @@ fn test_section_toml() {
     let top_level = "my-proj".to_string();
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
-    let map = scan(top_level.clone(), vec![s1.clone(), s2.clone()]);
-    assert_eq!(map.section_toml("my-proj"), r#"key_1 = 'value 1'
+    let map = scan(top_level, vec![s1, s2]);
+    assert_eq!(
+        map.section_toml("my-proj"),
+        r#"key_1 = 'value 1'
 key_2 = 'value 2'
 log_level = 'debug'
-section_3_key_1 = 'value 7'"#);
-    assert_eq!(map.section_toml("section-1"), r#"[section-1]
+section_3_key_1 = 'value 7'"#
+    );
+    assert_eq!(
+        map.section_toml("section-1"),
+        r#"[section-1]
 key_1 = 'value 3'
-key_2 = 'value 4'"#);
+key_2 = 'value 4'"#
+    );
 }
 
 #[test]
@@ -55,8 +61,10 @@ fn test_toml() {
     let top_level = "my-proj".to_string();
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
-    let map = scan(top_level.clone(), vec![s1.clone(), s2.clone()]);
-    assert_eq!(map.toml(), r#"key_1 = 'value 1'
+    let map = scan(top_level, vec![s1, s2]);
+    assert_eq!(
+        map.toml(),
+        r#"key_1 = 'value 1'
 key_2 = 'value 2'
 log_level = 'debug'
 section_3_key_1 = 'value 7'
@@ -69,7 +77,8 @@ key_2 = 'value 4'
 ip = '1.2.3.4'
 key_1 = 'value 5'
 key_2 = 'value 6'
-"#)
+"#
+    )
 }
 
 #[test]
@@ -81,7 +90,9 @@ fn test_scanner() {
         .add_section("section-2")
         .scan()
         .toml();
-    assert_eq!(toml, r#"key_1 = 'value 1'
+    assert_eq!(
+        toml,
+        r#"key_1 = 'value 1'
 key_2 = 'value 2'
 log_level = 'debug'
 section_3_key_1 = 'value 7'
@@ -94,7 +105,8 @@ key_2 = 'value 4'
 ip = '1.2.3.4'
 key_1 = 'value 5'
 key_2 = 'value 6'
-"#)
+"#
+    )
 }
 
 fn set_env_vars2() {
@@ -115,7 +127,9 @@ fn test_scanner2() {
         .add_section("servers_db")
         .scan()
         .toml();
-    assert_eq!(toml, r#"env = 'prod'
+    assert_eq!(
+        toml,
+        r#"env = 'prod'
 
 [servers]
 platform = 'GCP'
@@ -125,5 +139,6 @@ host = '1.1.2.2'
 max_conns = '1250'
 name = 'db'
 user = 'bob'
-"#)
+"#
+    )
 }

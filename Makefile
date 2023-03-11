@@ -1,6 +1,6 @@
 default: all
 
-all: deps build test demos
+all: deps build linkt check test demos
 
 auth:
 	@echo "Copy and paste the following in the terminal where you"
@@ -11,6 +11,18 @@ auth:
 
 build:
 	@cargo build
+
+lint:
+	@cargo +nightly clippy --version
+	@cargo +nightly clippy --all-targets --all-features -- --no-deps -D clippy::all
+
+cicd-lint:
+	@cargo clippy --version
+	@cargo clippy --all-targets --all-features -- --no-deps -D clippy::all
+
+check:
+	@cargo deny check
+	@cargo +nightly udeps
 
 test:
 	@cargo test
@@ -50,3 +62,11 @@ demos:
 	CFYG_SERVERS_DB_USER= \
 	CFYG_SERVERS_DB_MAX_CONNS=1250 \
 	cargo run --example=full
+
+setup-cargo-deny:
+	@echo ">> Setting up cargo deny ..."
+	@cargo install --locked cargo-deny && cargo deny init
+
+setup-udeps:
+	@echo ">> Setting up cargo udeps ..."
+	@cargo install cargo-udeps --locked

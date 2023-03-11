@@ -5,9 +5,9 @@ pub struct Options {
 }
 
 impl Options {
-    pub fn default() -> Options {
-        Options{
-            .. Default::default()
+    pub fn new() -> Options {
+        Options {
+            ..Default::default()
         }
     }
 }

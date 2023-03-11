@@ -8,14 +8,11 @@ pub struct KV {
 
 impl KV {
     pub fn new(key: String, value: String) -> Self {
-        KV {
-            key: key.to_string(),
-            value: value.to_string(),
-        }
+        KV { key, value }
     }
 
     pub fn normalise_key(&mut self, prefix: &str) {
-        let mut pfx = prefix.clone().to_string();
+        let mut pfx = prefix.to_string();
         pfx.push('_');
         self.key = self.key.clone().replace(&pfx, "").to_ascii_lowercase()
     }
@@ -36,7 +33,7 @@ impl KVMap {
         KVMap {
             top_level: top_level.to_string(),
 
-            .. Default::default()
+            ..Default::default()
         }
     }
 
@@ -50,7 +47,7 @@ impl KVMap {
         keys
     }
 
-    pub fn values(&self) -> Vec<Vec<KV>>  {
+    pub fn values(&self) -> Vec<Vec<KV>> {
         let mut vals: Vec<Vec<KV>> = self.data.clone().into_values().collect();
         vals.sort();
         vals
@@ -65,9 +62,10 @@ impl KVMap {
     pub fn section_toml(&self, name: &str) -> String {
         let mut toml = String::new();
         if name != self.top_level {
-            toml.push_str(&format!("[{}]\n", name))
+            toml.push_str(&format!("[{name}]\n"))
         }
-        let mut body = self.section(name)
+        let mut body = self
+            .section(name)
             .iter()
             .map(|kv| kv.toml())
             .collect::<Vec<String>>();
@@ -78,12 +76,12 @@ impl KVMap {
 
     pub fn toml(&self) -> String {
         let mut toml = self.section_toml(&self.top_level);
-        toml.push_str("\n");
+        toml.push('\n');
         for key in self.keys() {
             if key != self.top_level {
-                toml.push_str("\n");
+                toml.push('\n');
                 toml.push_str(&self.section_toml(&key));
-                toml.push_str("\n");
+                toml.push('\n');
             }
         }
         toml

@@ -1,12 +1,12 @@
-use std::fs;
 use serde::{de, ser};
+use std::fs;
 use toml::Value;
 use toml::Value::Table;
 
+use super::merger::merge;
+use super::options::Options;
 use crate::env;
 use crate::searchpath::Finder;
-use super::options::Options;
-use super::merger::merge;
 
 #[derive(Clone, Debug, Default)]
 pub struct Confygery {
@@ -21,14 +21,14 @@ impl Confygery {
         let opts = Options::default();
         let proj = opts.project.clone();
         Confygery {
-            opts: opts,
-            configs:  Vec::new(),
+            opts,
+            configs: Vec::new(),
             map: env::KVMap::new(&proj),
             toml: String::new(),
         }
     }
 
-    pub fn with_opts<'a>(&'a mut self, opts: Options) -> &'a mut Confygery {
+    pub fn with_opts(&mut self, opts: Options) -> &mut Confygery {
         self.opts = opts;
         self
     }
@@ -38,8 +38,8 @@ impl Confygery {
         self
     }
 
-    pub fn add_env<'a>(&'a mut self, opts: env::Options) -> &'a mut Confygery {
-        self.map = env::scan(opts.top_level.clone(), opts.sections.clone());
+    pub fn add_env(&mut self, opts: env::Options) -> &mut Confygery {
+        self.map = env::scan(opts.top_level.clone(), opts.sections);
         self.add_str(&self.map.toml())
     }
 
@@ -50,29 +50,29 @@ impl Confygery {
         match result {
             Ok(path) => {
                 let content = fs::read_to_string(path).unwrap();
-                self.add_str(&content.to_string())
-            },
+                self.add_str(&content)
+            }
             Err(_) => {
                 // If the file isn't found, it's not added
                 self
             }
         }
-
     }
 
     pub fn add_struct<'a, T: ?Sized>(&'a mut self, value: &T) -> &'a mut Confygery
     where
-    T: ser::Serialize,
+        T: ser::Serialize,
     {
         let content = toml::to_string(value).unwrap();
         self.configs.push(content);
         self
     }
+
     // Final steps
 
-    fn merge_all<'a>(&'a mut self) -> &'a mut Confygery {
-        if &self.configs.len() == &0 {
-            return self
+    fn merge_all(&mut self) -> &mut Confygery {
+        if self.configs.is_empty() {
+            return self;
         }
         let mut merged: Value = toml::from_str(&self.configs[0]).unwrap();
         for i in 1..self.configs.len() {
@@ -83,9 +83,9 @@ impl Confygery {
         self
     }
 
-    pub fn build<'a, T>(&'a mut self) -> Result<T, toml::de::Error>
+    pub fn build<T>(&mut self) -> Result<T, toml::de::Error>
     where
-    T: de::Deserialize<'a>,
+        T: de::DeserializeOwned,
     {
         self.merge_all();
         let built = toml::from_str(&self.toml)?;
