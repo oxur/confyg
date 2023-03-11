@@ -17,7 +17,7 @@ name = "confyg"
 
 [dependencies]
 serde = "1.0"
-toml = "0.5.9"
+toml = "0.7"
 
 [dev-dependencies]
 serde_derive = "1.0"
