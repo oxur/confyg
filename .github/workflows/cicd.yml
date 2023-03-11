@@ -26,8 +26,8 @@ jobs:
         make check
     - name: Run tests
       run: cargo test
-    - name: Run demos
-      run: make demos
+    - name: Run examples
+      run: make examples
     - name: Notify CI/CD Slack Channel
       uses: innocarpe/actions-slack@v1
       with:
