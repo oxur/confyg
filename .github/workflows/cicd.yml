@@ -1,6 +1,11 @@
 name: CI/CD
 
-on: [push]
+on:
+  workflow_dispatch:
+  push:
+  pull_request:
+  schedule:
+  - cron: "17 3 * * *"
 
 jobs:
   build:
@@ -11,6 +16,14 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build
       run: cargo build
+    - name: Lint
+      run: make cicd-lint
+    - name: Run checks
+      run: |
+        make nightly
+        make install-cargo-deny
+        make install-udeps
+        make check
     - name: Run tests
       run: cargo test
     - name: Run demos

@@ -3,17 +3,24 @@ use std::fs;
 use toml::Value;
 use toml::Value::Table;
 
-use super::merger::merge;
+use super::merger;
 use super::options::Options;
 use crate::env;
 use crate::searchpath::Finder;
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug)]
 pub struct Confygery {
     pub opts: Options,
     pub configs: Vec<String>,
     map: env::KVMap,
+    merged: Value,
     toml: String,
+}
+
+impl Default for Confygery {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl Confygery {
@@ -24,6 +31,7 @@ impl Confygery {
             opts,
             configs: Vec::new(),
             map: env::KVMap::new(&proj),
+            merged: toml::from_str("").unwrap(),
             toml: String::new(),
         }
     }
@@ -77,9 +85,10 @@ impl Confygery {
         let mut merged: Value = toml::from_str(&self.configs[0]).unwrap();
         for i in 1..self.configs.len() {
             let value = toml::from_str(&self.configs[i]).unwrap();
-            merge(&mut merged, &Table(value));
+            merger::merge(&mut merged, &Table(value));
         }
-        self.toml = merged.to_string();
+        self.merged = merged;
+        self.toml = toml::ser::to_string(&self.merged.clone()).unwrap();
         self
     }
 
@@ -88,7 +97,6 @@ impl Confygery {
         T: de::DeserializeOwned,
     {
         self.merge_all();
-        let built = toml::from_str(&self.toml)?;
-        Ok(built)
+        toml::from_str(&self.toml)
     }
 }

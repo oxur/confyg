@@ -1,5 +1,5 @@
-use serde_derive::Deserialize;
 use confyg::Confygery;
+use serde_derive::Deserialize;
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
@@ -25,10 +25,13 @@ struct DB {
 }
 
 fn main() {
-    let cfg: Config = Confygery::new()
+    let cfg: Config = match Confygery::new()
         .add_file("examples/confs/testing-dotted.toml")
         .build()
-        .unwrap();
+    {
+        Ok(x) => x,
+        Err(e) => panic!("{e}"),
+    };
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);

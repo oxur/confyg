@@ -26,7 +26,7 @@ fn test_find_file_new() {
     let file = find_file("Cargo.toml", &Finder::new().opts).unwrap();
     assert_eq!(file, "Cargo.toml");
     let err = find_file("cicd.yml", &Finder::new().opts);
-    assert!(err.is_ok());
+    assert!(err.is_err());
     assert_eq!(
         err.unwrap_err(),
         FinderError::NotFound("cicd.yml".to_string())

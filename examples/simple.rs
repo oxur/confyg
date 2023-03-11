@@ -1,7 +1,7 @@
-use serde_derive::Deserialize;
 use confyg::Confygery;
+use serde_derive::Deserialize;
 
-static CFG: &str = r#"
+const CFG: &str = r#"
 env = "prod"
 
 [servers]
@@ -34,19 +34,18 @@ struct DB {
     host: String,
     name: String,
     user: String,
-    max_conns: i16,
+    max_conns: u16,
 }
 
 fn main() {
-    let cfg: Config = Confygery::new()
-        .add_str(CFG)
-        .build()
-        .unwrap();
+    let cfg: Config = match Confygery::new().add_str(CFG).build() {
+        Ok(x) => x,
+        Err(e) => panic!("{e}"),
+    };
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);
     println!("DB name: {}", cfg.servers.db.name);
     println!("DB user: {}", cfg.servers.db.user);
     println!("DB max connections: {}", cfg.servers.db.max_conns);
-
 }
