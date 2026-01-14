@@ -161,18 +161,19 @@ format:
 .PHONY: coverage
 coverage:
 	@echo "$(BLUE)Generating test coverage report...$(RESET)"
-	@echo "$(CYAN)• Running tests with coverage ...$(RESET)"
-	@cargo llvm-cov --lib --no-default-features
+	@echo "$(CYAN)• Running tests with coverage (includes integration tests in ./tests)...$(RESET)"
+	@cargo llvm-cov --all-features --workspace
 	@echo "$(GREEN)✓ Coverage report generated$(RESET)"
-	@echo "$(YELLOW)→ For detailed HTML report, run: cargo llvm-cov --html --lib --no-default-features$(RESET)"
+	@echo "$(YELLOW)→ For detailed HTML report, run: make coverage-html$(RESET)"
 
 .PHONY: coverage-html
 coverage-html:
 	@echo "$(BLUE)Generating HTML coverage report...$(RESET)"
-	@echo "$(CYAN)• Running tests with coverage ...$(RESET)"
-	@cargo llvm-cov --html --lib --no-default-features
+	@echo "$(CYAN)• Running tests with coverage (includes integration tests in ./tests)...$(RESET)"
+	@cargo llvm-cov --html --all-features --workspace
 	@echo "$(GREEN)✓ HTML coverage report generated$(RESET)"
 	@echo "$(CYAN)→ Report: target/llvm-cov/html/index.html$(RESET)"
+	@echo "$(YELLOW)→ Open in browser: open target/llvm-cov/html/index.html$(RESET)"
 
 # Combined check targets
 .PHONY: check

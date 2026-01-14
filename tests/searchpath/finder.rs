@@ -50,3 +50,34 @@ fn test_find_file_add_paths() {
         .unwrap();
     assert_eq!(file, ".github/workflows/cicd.yml");
 }
+
+#[test]
+fn test_finder_options_mut() {
+    let mut finder = Finder::new();
+    finder.options_mut().add_path("./test");
+    
+    assert_eq!(finder.options().paths().len(), 1);
+    assert_eq!(finder.options().paths()[0], "./test");
+}
+
+#[test]
+fn test_finder_default() {
+    let finder = Finder::default();
+    assert_eq!(finder.options().paths().len(), 0);
+}
+
+#[test]
+fn test_finder_clone() {
+    let mut finder1 = Finder::new();
+    finder1.add_path("./config");
+    
+    let finder2 = finder1.clone();
+    assert_eq!(finder2.options().paths().len(), 1);
+}
+
+#[test]
+fn test_finder_debug() {
+    let finder = Finder::new();
+    let debug_str = format!("{:?}", finder);
+    assert!(debug_str.contains("Finder"));
+}
