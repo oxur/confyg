@@ -1,6 +1,6 @@
-use serde_derive::Deserialize;
-use confyg::Confygery;
 use confyg::conf;
+use confyg::Confygery;
+use serde_derive::Deserialize;
 
 #[derive(Debug, Deserialize)]
 #[allow(unused)]
@@ -25,25 +25,21 @@ struct DB {
     max_conns: i16,
 }
 
-fn main() {
-    let opts = conf::Options{
-        paths: vec![
-            "./".to_string(),
-            "../".to_string(),
-            "examples".to_string(),
-            "examples/confs".to_string(),
-        ],
-        .. Default::default()
-    };
-    let cfg: Config = Confygery::new()
-        .with_opts(opts)
-        .add_file("testing-dotted.toml")
-        .build()
-        .unwrap();
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut opts = conf::Options::default();
+    opts.add_path("./")
+        .add_path("../")
+        .add_path("examples")
+        .add_path("examples/confs");
+    let cfg: Config = Confygery::new()?
+        .with_opts(opts)?
+        .add_file("testing-dotted.toml")?
+        .build()?;
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);
     println!("DB name: {}", cfg.servers.db.name);
     println!("DB user: {}", cfg.servers.db.user);
     println!("DB max connections: {}", cfg.servers.db.max_conns);
+    Ok(())
 }

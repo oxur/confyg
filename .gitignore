@@ -11,3 +11,6 @@ Cargo.lock
 
 # Misc
 /resources/images/drafts/
+/workbench/
+/.claude/
+/assets/ai/ai-rust

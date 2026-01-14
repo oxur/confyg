@@ -24,18 +24,15 @@ struct DB {
     max_conns: i16,
 }
 
-fn main() {
-    let cfg: Config = match Confygery::new()
-        .add_file("examples/confs/testing-dotted.toml")
-        .build()
-    {
-        Ok(x) => x,
-        Err(e) => panic!("{e}"),
-    };
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let cfg: Config = Confygery::new()?
+        .add_file("examples/confs/testing-dotted.toml")?
+        .build()?;
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);
     println!("DB name: {}", cfg.servers.db.name);
     println!("DB user: {}", cfg.servers.db.user);
     println!("DB max connections: {}", cfg.servers.db.max_conns);
+    Ok(())
 }

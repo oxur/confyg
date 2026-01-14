@@ -4,6 +4,7 @@ use std::fmt::{Display, Formatter, Result};
 #[derive(Debug, Eq, PartialEq)]
 pub enum FinderError {
     NotFound(String),
+    PathConversion(String),
 }
 
 impl Error for FinderError {}
@@ -12,6 +13,9 @@ impl Display for FinderError {
     fn fmt(&self, f: &mut Formatter) -> Result {
         match self {
             FinderError::NotFound(filename) => write!(f, "couldn't find file {filename}."),
+            FinderError::PathConversion(path) => {
+                write!(f, "path contains invalid UTF-8: {path}")
+            }
         }
     }
 }

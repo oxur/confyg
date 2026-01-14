@@ -18,28 +18,28 @@ fn set_env_vars() {
 #[test]
 fn test_scan_env() {
     set_env_vars();
-    let top_level = "my-proj".to_string();
+    let top_level = "my-proj";
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
-    let map = scan(top_level.clone(), vec![s1.clone(), s2.clone()]);
+    let map = scan(top_level, &[s1.clone(), s2.clone()]);
     let keys: Vec<String> = map.keys();
-    assert_eq!(keys, vec![top_level, s1, s2]);
+    assert_eq!(keys, vec![top_level.to_string(), s1, s2]);
     let vals: Vec<Vec<KV>> = map.values();
-    assert_eq!(vals[0][0].key, "ip".to_string());
-    assert_eq!(vals[0][0].value, "1.2.3.4".to_string());
-    assert_eq!(vals[1][0].key, "key_1".to_string());
-    assert_eq!(vals[1][0].value, "value 1".to_string());
-    assert_eq!(vals[2][1].key, "key_2".to_string());
-    assert_eq!(vals[2][1].value, "value 4".to_string());
+    assert_eq!(vals[0][0].key(), "ip");
+    assert_eq!(vals[0][0].value(), "1.2.3.4");
+    assert_eq!(vals[1][0].key(), "key_1");
+    assert_eq!(vals[1][0].value(), "value 1");
+    assert_eq!(vals[2][1].key(), "key_2");
+    assert_eq!(vals[2][1].value(), "value 4");
 }
 
 #[test]
 fn test_section_toml() {
     set_env_vars();
-    let top_level = "my-proj".to_string();
+    let top_level = "my-proj";
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
-    let map = scan(top_level, vec![s1, s2]);
+    let map = scan(top_level, &[s1, s2]);
     assert_eq!(
         map.section_toml("my-proj"),
         r#"key_1 = 'value 1'
@@ -58,10 +58,10 @@ key_2 = 'value 4'"#
 #[test]
 fn test_toml() {
     set_env_vars();
-    let top_level = "my-proj".to_string();
+    let top_level = "my-proj";
     let s1 = "section-1".to_string();
     let s2 = "section-2".to_string();
-    let map = scan(top_level, vec![s1, s2]);
+    let map = scan(top_level, &[s1, s2]);
     assert_eq!(
         map.toml(),
         r#"key_1 = 'value 1'

@@ -1,5 +1,5 @@
-use serde_derive::{Deserialize, Serialize};
 use confyg::Confygery;
+use serde_derive::{Deserialize, Serialize};
 
 #[derive(Debug, Default, Deserialize, Serialize)]
 #[allow(unused)]
@@ -24,21 +24,20 @@ struct DB {
     max_conns: i16,
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let defaults = Config {
         env: "testing".to_string(),
-
-        .. Default::default()
+        ..Default::default()
     };
-    let cfg = Confygery::new()
-        .add_file("no-such-file.toml")
-        .add_struct(&defaults)
-        .build::<Config>()
-        .unwrap();
+    let cfg = Confygery::new()?
+        .add_file("no-such-file.toml")?
+        .add_struct(&defaults)?
+        .build::<Config>()?;
     println!("Deploy env: {}", cfg.env);
     println!("Servers platform: {}", cfg.servers.platform);
     println!("DB host: {}", cfg.servers.db.host);
     println!("DB name: {}", cfg.servers.db.name);
     println!("DB user: {}", cfg.servers.db.user);
     println!("DB max connections: {}", cfg.servers.db.max_conns);
+    Ok(())
 }

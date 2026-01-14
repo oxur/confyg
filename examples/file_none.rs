@@ -1,5 +1,5 @@
-use serde_derive::Deserialize;
 use confyg::Confygery;
+use serde_derive::Deserialize;
 
 #[derive(Debug, Default, Deserialize)]
 #[allow(unused)]
@@ -24,12 +24,12 @@ struct DB {
     max_conns: i16,
 }
 
-fn main() {
-    let empty = Config{
-        .. Default::default()
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let empty = Config {
+        ..Default::default()
     };
-    let result = Confygery::new()
-        .add_file("no-such-file.toml")
+    let result = Confygery::new()?
+        .add_file("no-such-file.toml")?
         .build::<Config>();
     let cfg = match result {
         Ok(x) => x,
@@ -41,4 +41,5 @@ fn main() {
     println!("DB name: {}", cfg.servers.db.name);
     println!("DB user: {}", cfg.servers.db.user);
     println!("DB max connections: {}", cfg.servers.db.max_conns);
+    Ok(())
 }
