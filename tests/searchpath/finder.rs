@@ -16,8 +16,8 @@ fn test_find_file_defaults() {
 fn test_find_file_with_paths() {
     let mut opts = Options::default();
     opts.add_path(".github/workflows");
-    let file = find_file("cicd.yml", &opts).unwrap();
-    assert_eq!(file, ".github/workflows/cicd.yml");
+    let file = find_file("ci.yml", &opts).unwrap();
+    assert_eq!(file, ".github/workflows/ci.yml");
 }
 
 #[test]
@@ -36,9 +36,9 @@ fn test_find_file_new() {
 fn test_find_file_add_path() {
     let file = Finder::new()
         .add_path(".github/workflows")
-        .find("cicd.yml")
+        .find("ci.yml")
         .unwrap();
-    assert_eq!(file, ".github/workflows/cicd.yml");
+    assert_eq!(file, ".github/workflows/ci.yml");
 }
 
 #[test]
@@ -46,9 +46,9 @@ fn test_find_file_add_paths() {
     let file = Finder::new()
         .add_path("src/env")
         .add_path(".github/workflows")
-        .find("cicd.yml")
+        .find("ci.yml")
         .unwrap();
-    assert_eq!(file, ".github/workflows/cicd.yml");
+    assert_eq!(file, ".github/workflows/ci.yml");
 }
 
 #[test]
