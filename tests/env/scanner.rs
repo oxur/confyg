@@ -154,7 +154,7 @@ fn test_scanner_new() {
 fn test_scanner_options() {
     let mut scanner = Scanner::new();
     scanner.set_top_level("myapp");
-    
+
     assert_eq!(scanner.options().top_level(), "myapp");
 }
 
@@ -163,7 +163,7 @@ fn test_scanner_options_mut() {
     let mut scanner = Scanner::new();
     scanner.options_mut().set_top_level("myapp");
     scanner.options_mut().add_section("db");
-    
+
     assert_eq!(scanner.options().top_level(), "myapp");
     assert_eq!(scanner.options().sections().len(), 1);
 }
@@ -177,7 +177,7 @@ fn test_scanner_builder_pattern() {
         .add_section("section-1")
         .add_section("section-2")
         .scan();
-    
+
     let toml = scanner.toml();
     assert!(toml.contains("key_1"));
 }

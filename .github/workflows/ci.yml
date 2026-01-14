@@ -18,7 +18,7 @@ jobs:
       matrix:
         check:
           - name: Build
-            command: make compile
+            command: make build
             components: ''
           - name: Lint
             command: make lint

@@ -55,7 +55,7 @@ fn test_find_file_add_paths() {
 fn test_finder_options_mut() {
     let mut finder = Finder::new();
     finder.options_mut().add_path("./test");
-    
+
     assert_eq!(finder.options().paths().len(), 1);
     assert_eq!(finder.options().paths()[0], "./test");
 }
@@ -70,7 +70,7 @@ fn test_finder_default() {
 fn test_finder_clone() {
     let mut finder1 = Finder::new();
     finder1.add_path("./config");
-    
+
     let finder2 = finder1.clone();
     assert_eq!(finder2.options().paths().len(), 1);
 }
