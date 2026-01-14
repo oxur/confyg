@@ -12,6 +12,7 @@
 ## Overview
 
 `confyg` provides a flexible way to build application configurations by:
+
 - Loading from TOML files with path searching
 - Scanning environment variables with prefix mapping
 - Merging multiple configuration sources with override semantics
@@ -170,6 +171,7 @@ Environment variables are converted to lowercase TOML keys:
 | `MYAPP_DATABASE_PORT` | `[database]`<br>`port = "..."` |
 
 **Note**: Due to environment variable naming limitations:
+
 - Use underscores instead of dots in section names
 - Hyphens in section names become underscores (e.g., `my-app` → `MY_APP`)
 - All keys are converted to lowercase
@@ -205,6 +207,7 @@ match Confygery::new()?.add_file("config.toml")?.build::<MyConfig>() {
 ```
 
 Error types include:
+
 - `FileRead` - Failed to read a file
 - `TomlParse` - Invalid TOML syntax
 - `TomlSerialize` - Failed to serialize to TOML
@@ -228,8 +231,8 @@ Apache License, Version 2.0
 
 [logo]: resources/images/logo-v1-small.png
 [logo-large]: resources/images/logo-v1.png
-[build]: https://github.com/oxur/confyg/actions/workflows/cicd.yml
-[build-badge]: https://github.com/oxur/confyg/actions/workflows/cicd.yml/badge.svg
+[build]: https://github.com/oxur/confyg/actions/workflows/ci.yml
+[build-badge]: https://github.com/oxur/confyg/actions/workflows/ci.yml/badge.svg
 [crate]: https://crates.io/crates/confyg
 [crate-badge]: https://img.shields.io/crates/v/confyg.svg
 [docs]: https://docs.rs/confyg/
